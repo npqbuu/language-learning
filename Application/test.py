@@ -1,15 +1,19 @@
-from algorithm import CAT
-# this function generates an item bank, in case the user cannot provide one
-from catsim.cat import generate_item_bank
-import catsim.plot as catplot
+from algorithm import CAT, generate_bank
 
-# generating an item bank
-print('Generating item bank...')
-bank_size = 50
-items = generate_item_bank(bank_size, '1PL')
+items = generate_bank()
 
-#catplot.gen3d_dataset_scatter(items, 'Question banks', show = True)
-
-#catplot.item_curve(b = items[0][1], title = 'Question 0')
-
+# CAT process
 cat = CAT(items)
+_stop = False
+
+while True:
+    (_stop, item_index) = cat.item_selection() # Get next item
+
+    if _stop:
+        break
+
+    cat.administered_items.append(item_index)
+    
+    response = bool(int(input("True or False? (1 / 0): "))) # Get user respone for current question
+    cat.responses.append(response)
+    cat.item_administration()

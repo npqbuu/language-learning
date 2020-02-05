@@ -1,3 +1,5 @@
+# this function generates an item bank, in case the user cannot provide one
+from catsim.cat import generate_item_bank
 # simulation package contains the Simulator and all abstract classes
 from catsim.simulation import *
 # initialization package contains different initial proficiency estimation strategies
@@ -8,8 +10,16 @@ from catsim.selection import *
 from catsim.estimation import *
 # stopping package contains different stopping criteria for the CAT
 from catsim.stopping import *
+
 import numpy as np
 import random
+
+def generate_bank():
+    # generating an item bank
+    print('Generating item bank...')
+    bank_size = 100
+    
+    return(generate_item_bank(bank_size, '1PL'))
 
 class CAT():
     def __init__(self, items):
@@ -35,33 +45,19 @@ class CAT():
         self.thetas = [self.est_theta]
         print('Examinee initial proficiency:', self.est_theta)
 
-    def item_selection():
+    def item_selection(self):
         # get the index of the next item to be administered to the current examinee, given the answers they have already given to the previous dummy items
-        item_index = selector.select(items=items, administered_items=administered_items, est_theta=est_theta)
+        item_index = self.selector.select(items=self.items, administered_items=self.administered_items, est_theta=self.est_theta)
         print('Next item to be administered:', item_index)
 
         # get a boolean value pointing out whether the test should stop
-        _stop = stopper.stop(administered_items=items[administered_items], theta=est_theta)
+        _stop = self.stopper.stop(administered_items=self.items[self.administered_items], theta=self.est_theta)
         print('Should the test be stopped:', _stop)
     
         return (_stop, item_index)
 
-    def item_administration():
+    def item_administration(self):
         # get an new estimated theta
-        new_theta = estimator.estimate(items=items, administered_items=administered_items, response_vector=responses, est_theta=est_theta)
+        new_theta = self.estimator.estimate(items=self.items, administered_items=self.administered_items, response_vector=self.responses, est_theta=self.est_theta)
         print('Estimated proficiency, given answered items:', new_theta)
-        thetas.append(new_theta)
-
-    def process():
-        while True:
-            administered_items.append(item_index)
-    
-            response = bool(int(input())) # Get user respone for current question
-            responses.append(response)
-    
-            item_administration()
-    
-            (_stop, item_index) = item_selection() # Get next item
-    
-            if _stop:
-                break
+        self.thetas.append(new_theta)
