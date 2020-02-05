@@ -2,7 +2,7 @@
 
 ### prerequisites libraries
 
-pip install flask
-pip install catsim
-pip install SpeechRecognition
+- pip install flask
+- pip install catsim
+- pip install SpeechRecognition
 
