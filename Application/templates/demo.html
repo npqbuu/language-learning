@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CAT DEMO</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+ 
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Language Learning DEMO</h3>
+            <h4>Computerized Adaptive Test of English Vocabulary</h4>
+        </div>
+        
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"> Theta: {{ theta }} </div>
+    </div>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{ question }}</div>
+      <div class="panel-body">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="AnswerRadios" id="AnswerRadios1" value="option1" checked>
+            <label class="form-check-label" for="AnswerRadios1">{{ choice1 }}</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="AnswerRadios" id="AnswerRadios2" value="option2">
+            <label class="form-check-label" for="AnswerRadios2">{{ choice2 }}</label>
+        </div>
+      </div>
+    </div>
+</div>
+
+</body>
+</html>
