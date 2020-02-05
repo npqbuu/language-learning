@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from algorithm import CAT, generate_bank
 
 
@@ -8,12 +8,10 @@ cat = CAT(items)
 app = Flask(__name__, template_folder='templates')
 
 @app.route("/")
-
 def index():
     return render_template("index.html")
 
 @app.route("/demo", methods=["GET", "POST"])
-
 def demo():
     choice1 = True
     choice2 = False
@@ -40,8 +38,8 @@ def demo():
         cat.item_administration()
 
         (_stop, item_index) = cat.item_selection() # Get next item
-        #if _stop:
-        #    break
+        if _stop:
+            return redirect('/result')
         cat.administered_items.append(item_index)
         progress = (len(cat.thetas) - 1) * 10
         theta = cat.thetas[-1]
@@ -50,3 +48,8 @@ def demo():
 
     # Render Template
     return render_template("demo.html", question = question, theta = theta, progress = progress, choice1 = choice1, choice2 = choice2)
+
+@app.route("/result")
+def result():
+    theta = cat.thetas[-1]
+    return render_template("result.html", theta = theta)
