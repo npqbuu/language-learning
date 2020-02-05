@@ -1,14 +1,18 @@
-from flask import Flask, render_template, request, redirect
 from algorithm import CAT, generate_bank
+from flask import Flask, render_template, request, redirect, session
+from flask_session import Session
 
+app = Flask(__name__)
 
-items = generate_bank()
-cat = CAT(items)
-
-app = Flask(__name__, template_folder='templates')
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 @app.route("/")
 def index():
+    session['items'] = generate_bank()
+    session['cat'] = CAT(session['items'])
+
     return render_template("index.html")
 
 @app.route("/demo", methods=["GET", "POST"])
@@ -17,13 +21,12 @@ def demo():
     choice2 = False
 
     if request.method == "GET":
-        # cat = CAT(items) # Start CAT procedure
 
-        (_stop, item_index) = cat.item_selection() # Get first item
-        cat.administered_items.append(item_index)
+        (_stop, item_index) = session['cat'].item_selection() # Get first item
+        session['cat'].administered_items.append(item_index)
 
         progress = 0
-        theta = cat.thetas[0]
+        theta = session['cat'].thetas[0]
         # Question variables
         question = str(item_index)
     else:
@@ -34,15 +37,15 @@ def demo():
             response = False
         print(response)
 
-        cat.responses.append(response)
-        cat.item_administration()
+        session['cat'].responses.append(response)
+        session['cat'].item_administration()
 
-        (_stop, item_index) = cat.item_selection() # Get next item
+        (_stop, item_index) = session['cat'].item_selection() # Get next item
         if _stop:
             return redirect('/result')
-        cat.administered_items.append(item_index)
-        progress = (len(cat.thetas) - 1) * 10
-        theta = cat.thetas[-1]
+        session['cat'].administered_items.append(item_index)
+        progress = (len(session['cat'].thetas) - 1) * 10
+        theta = session['cat'].thetas[-1]
         # Question variables
         question = str(item_index)
 
@@ -51,5 +54,5 @@ def demo():
 
 @app.route("/result")
 def result():
-    theta = cat.thetas[-1]
+    theta = session['cat'].thetas[-1]
     return render_template("result.html", theta = theta)
