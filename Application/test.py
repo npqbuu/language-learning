@@ -1,19 +1,11 @@
-from algorithm import CAT, generate_bank
+import speech_recognition as sr
+from algorithm import recognize_speech_from_mic
 
-items = generate_bank()
+# create recognizer and mic instances
+recognizer = sr.Recognizer()
+microphone = sr.Microphone()
 
-# CAT process
-cat = CAT(items)
-_stop = False
+text = recognize_speech_from_mic(recognizer, microphone)
+print(text['transcription'])
 
-while True:
-    (_stop, item_index) = cat.item_selection() # Get next item
-
-    if _stop:
-        break
-
-    cat.administered_items.append(item_index)
-    
-    response = bool(int(input("True or False? (1 / 0): "))) # Get user respone for current question
-    cat.responses.append(response)
-    cat.item_administration()
+# TODO: Convert to client side recording (https://www.reddit.com/r/flask/comments/6wg24z/is_there_any_tutorial_on_how_to_run_pyaudio_with/) -> Learn JavaScript

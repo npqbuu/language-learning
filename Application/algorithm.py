@@ -1,18 +1,14 @@
-# this function generates an item bank, in case the user cannot provide one
-from catsim.cat import generate_item_bank
-# simulation package contains the Simulator and all abstract classes
-from catsim.simulation import *
-# initialization package contains different initial proficiency estimation strategies
-from catsim.initialization import *
-# selection package contains different item selection strategies
-from catsim.selection import *
-# estimation package contains different proficiency estimation methods
-from catsim.estimation import *
-# stopping package contains different stopping criteria for the CAT
-from catsim.stopping import *
-
 import numpy as np
 import random
+# CAT
+from catsim.cat import generate_item_bank # this function generates an item bank, in case the user cannot provide one
+from catsim.simulation import * # simulation package contains the Simulator and all abstract classes
+from catsim.initialization import * # initialization package contains different initial proficiency estimation strategies
+from catsim.selection import * # selection package contains different item selection strategies
+from catsim.estimation import * # estimation package contains different proficiency estimation methods
+from catsim.stopping import * # stopping package contains different stopping criteria for the CAT
+# Speech to text
+import speech_recognition as sr
 
 def generate_bank():
     # generating an item bank
@@ -61,3 +57,52 @@ class CAT():
         new_theta = self.estimator.estimate(items=self.items, administered_items=self.administered_items, response_vector=self.responses, est_theta=self.est_theta)
         print('Estimated proficiency, given answered items:', new_theta)
         self.thetas.append(new_theta)
+
+def recognize_speech_from_mic(recognizer, microphone): # https://github.com/realpython/python-speech-recognition
+    """Transcribe speech from recorded from `microphone`.
+
+    Returns a dictionary with three keys:
+    "success": a boolean indicating whether or not the API request was
+               successful
+    "error":   `None` if no error occured, otherwise a string containing
+               an error message if the API could not be reached or
+               speech was unrecognizable
+    "transcription": `None` if speech could not be transcribed,
+               otherwise a string containing the transcribed text
+    """
+    # check that recognizer and microphone arguments are appropriate type
+    if not isinstance(recognizer, sr.Recognizer):
+        raise TypeError("`recognizer` must be `Recognizer` instance")
+
+    if not isinstance(microphone, sr.Microphone):
+        raise TypeError("`microphone` must be `Microphone` instance")
+
+    # adjust the recognizer sensitivity to ambient noise and record audio
+    # from the microphone
+    with microphone as source:
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+
+    # set up the response object
+    response = {
+        "success": True,
+        "error": None,
+        "transcription": None
+    }
+
+    # try recognizing the speech in the recording
+    # if a RequestError or UnknownValueError exception is caught,
+    #     update the response object accordingly
+    try:
+        response["transcription"] = recognizer.recognize_google(audio)
+    except sr.RequestError:
+        # API was unreachable or unresponsive
+        response["success"] = False
+        response["error"] = "API unavailable"
+    except sr.UnknownValueError:
+        # speech was unintelligible
+        response["error"] = "Unable to recognize speech"
+
+    return response
+
+
