@@ -56,3 +56,17 @@ def demo():
 def result():
     theta = session['cat'].thetas[-1]
     return render_template("result.html", theta = theta)
+
+@app.route("/pronounciation", methods=['GET', 'POST'])
+def pronounciation():
+    if request.method == "GET":
+        result = ''
+        word = 'April'
+    else:
+        #f = request.files['file']
+        #filePath = "./somedir/"+secure_filename(f.filename)
+        #f.save(filePath)
+        app.logger.debug(request.files['file'].filename) 
+        result = True
+
+    return render_template("pronounciation.html", word = word, result = result)
