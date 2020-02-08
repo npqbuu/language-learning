@@ -5,5 +5,3 @@
 - pip install flask
 - pip install catsim
 - pip install SpeechRecognition
-- pip install PyAudio
-

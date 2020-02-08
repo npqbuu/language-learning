@@ -190,4 +190,8 @@ flask_session/*
 # End of https://www.gitignore.io/api/flask,python,jupyternotebooks,visualstudiocode
 Application/flask_session/
 
+<<<<<<< HEAD
 Application/file.wav
+=======
+.vscode/
+>>>>>>> master
