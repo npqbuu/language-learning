@@ -58,7 +58,7 @@ class CAT():
         print('Estimated proficiency, given answered items:', new_theta)
         self.thetas.append(new_theta)
 
-def recognize_speech(recognizer, microphone, record): # https://github.com/realpython/python-speech-recognition
+def recognize_speech(recognizer, record): # https://github.com/realpython/python-speech-recognition
     """Transcribe speech from recorded from `microphone`.
 
     Returns a dictionary with three keys:
@@ -73,9 +73,6 @@ def recognize_speech(recognizer, microphone, record): # https://github.com/realp
     # check that recognizer and microphone arguments are appropriate type
     if not isinstance(recognizer, sr.Recognizer):
         raise TypeError("`recognizer` must be `Recognizer` instance")
-
-    if not isinstance(microphone, sr.Microphone):
-        raise TypeError("`microphone` must be `Microphone` instance")
 
     # adjust the recognizer sensitivity to ambient noise and record audio
     # from the microphone

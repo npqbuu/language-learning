@@ -2,30 +2,19 @@
 URL = window.URL || window.webkitURL;
 
 var gumStream; 						//stream from getUserMedia()
-var recorder; 						//MediaRecorder object
-var chunks = [];					//Array of chunks of audio data from the browser
-var extension;
+var rec; 							//Recorder.js object
+var input; 							//MediaStreamAudioSourceNode we'll be recording
+
+// shim for AudioContext when it's not avb. 
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext //audio context to help us record
 
 var recordButton = document.getElementById("recordButton");
 var stopButton = document.getElementById("stopButton");
-var pauseButton = document.getElementById("pauseButton");
 
 //add events to those 2 buttons
 recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
-pauseButton.addEventListener("click", pauseRecording);
-
-// true on chrome, false on firefox
-console.log("audio/webm:"+MediaRecorder.isTypeSupported('audio/webm;codecs=opus'));
-// false on chrome, true on firefox
-console.log("audio/ogg:"+MediaRecorder.isTypeSupported('audio/ogg;codecs=opus'));
-
-if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){
-	extension="webm";
-}else{
-	extension="ogg"
-}
-
 
 function startRecording() {
 	console.log("recordButton clicked");
@@ -35,7 +24,7 @@ function startRecording() {
 		https://addpipe.com/blog/audio-constraints-getusermedia/
 	*/
     
-    var constraints = {audio: true}
+    var constraints = { audio: true, video:false }
 
  	/*
     	Disable the record button until we get a success or fail from getUserMedia() 
@@ -43,7 +32,6 @@ function startRecording() {
 
 	recordButton.disabled = true;
 	stopButton.disabled = false;
-	pauseButton.disabled = false
 
 	/*
     	We're using the standard promise based getUserMedia() 
@@ -51,72 +39,40 @@ function startRecording() {
 	*/
 
 	navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-		console.log("getUserMedia() success, stream created, initializing MediaRecorder");
+		console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
+
+		/*
+			create an audio context after getUserMedia is called
+			sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
+			the sampleRate defaults to the one set in your OS for your playback device
+		*/
+		audioContext = new AudioContext();
+
+		//update the format 
+		document.getElementById("formats").innerHTML="Format: 1 channel pcm @ "+audioContext.sampleRate/1000+"kHz"
 
 		/*  assign to gumStream for later use  */
 		gumStream = stream;
-
-		var options = {
-	      audioBitsPerSecond :  256000,
-	      videoBitsPerSecond : 2500000,
-	      bitsPerSecond:       2628000,
-	      mimeType : 'audio/'+extension+';codecs=opus'
-	    }
-
-	    //update the format 
-		document.getElementById("formats").innerHTML='Sample rate: 48kHz, MIME: audio/'+extension+';codecs=opus';
+		
+		/* use the stream */
+		input = audioContext.createMediaStreamSource(stream);
 
 		/* 
-			Create the MediaRecorder object
+			Create the Recorder object and configure to record mono sound (1 channel)
+			Recording 2 channels  will double the file size
 		*/
-		recorder = new MediaRecorder(stream, options);
+		rec = new Recorder(input,{numChannels:1})
 
-		//when data becomes available add it to our attay of audio data
-	    recorder.ondataavailable = function(e){
-	    	console.log("recorder.ondataavailable:" + e.data);
-	    	
-	    	console.log ("recorder.audioBitsPerSecond:"+recorder.audioBitsPerSecond)
-	    	console.log ("recorder.videoBitsPerSecond:"+recorder.videoBitsPerSecond)
-	    	console.log ("recorder.bitsPerSecond:"+recorder.bitsPerSecond)
-	      	// add stream data to chunks
-	      	chunks.push(e.data);
-	      	// if recorder is 'inactive' then recording has finished
-	      	if (recorder.state == 'inactive') {
-	          // convert stream data chunks to a 'webm' audio format as a blob
-	          const blob = new Blob(chunks, { type: 'audio/'+extension, bitsPerSecond:128000});
-	          sendData(blob)
-	      	}
-	    };
+		//start the recording process
+		rec.record()
 
-	    recorder.onerror = function(e){
-	    	console.log(e.error);
-	    }
+		console.log("Recording started");
 
-	    //start recording using 1 second chunks
-	    //Chrome and Firefox will record one long chunk if you do not specify the chunck length
-	    recorder.start(1000);
-
-    	//recorder.start();
-    }).catch(function(err) {
+	}).catch(function(err) {
 	  	//enable the record button if getUserMedia() fails
     	recordButton.disabled = false;
     	stopButton.disabled = true;
-    	pauseButton.disabled = true
 	});
-}
-
-function pauseRecording(){
-	console.log("pauseButton clicked recorder.state=",recorder.state );
-	if (recorder.state=="recording"){
-		//pause
-		recorder.pause();
-		pauseButton.innerHTML="Resume";
-	}else if (recorder.state=="paused"){
-		//resume
-		recorder.resume();
-		pauseButton.innerHTML="Pause";
-
-	}
 }
 
 function stopRecording() {
@@ -125,31 +81,20 @@ function stopRecording() {
 	//disable the stop button, enable the record too allow for new recordings
 	stopButton.disabled = true;
 	recordButton.disabled = false;
-	pauseButton.disabled = true;
-
-	//reset button just in case the recording is stopped while paused
-	pauseButton.innerHTML="Pause";
 	
 	//tell the recorder to stop the recording
-	recorder.stop();
+	rec.stop();
 
 	//stop microphone access
 	gumStream.getAudioTracks()[0].stop();
+
+	//create the wav blob and pass it on to sendData
+	rec.exportWAV(sendData);
 }
 
 function sendData(blob) {
-	var filename = new Date().toISOString();
-	var form = new FormData();
-	form.append('file', blob, filename);
-	
-	$.ajax({
-	  type: 'POST',
-	  url: '/pronounciation',
-	  data: form, // Our pretty new form
-	  cache: false,
-	  processData: false, // tell jQuery not to process the data
-	  contentType: false // tell jQuery not to set contentType
-	}).done(function(data) {
-  	console.log(data);
-	});
+	fetch('/checkpronounciation', {
+		method: "POST",
+		body: blob
+	  });
 }

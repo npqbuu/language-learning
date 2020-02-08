@@ -1,6 +1,7 @@
-from algorithm import CAT, generate_bank
+from algorithm import CAT, generate_bank, recognize_speech
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
+import speech_recognition as sr
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ Session(app)
 def index():
     session['items'] = generate_bank()
     session['cat'] = CAT(session['items'])
+    session['words'] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     return render_template("index.html")
 
@@ -61,12 +63,28 @@ def result():
 def pronounciation():
     if request.method == "GET":
         result = ''
-        word = 'April'
-    else:
-        #f = request.files['file']
-        #filePath = "./somedir/"+secure_filename(f.filename)
-        #f.save(filePath)
-        app.logger.debug(request.files['file'].filename) 
-        result = True
-
+        session['word'] = session['words'].pop()
+        word = session['word']
     return render_template("pronounciation.html", word = word, result = result)
+
+@app.route("/checkpronounciation", methods=['POST'])
+def checkpronounciation():
+    # Open file and write binary (blob) data
+    with open('file.wav', 'wb') as f:
+        f.write(request.data)
+    # Speech recognition
+    response = recognize_speech(sr.Recognizer(), sr.AudioFile('file.wav'))
+    session['answer'] = response["transcription"]
+    
+    return redirect('/result_voice')
+
+@app.route("/result_voice")
+def result_voice():
+    word = session['word']
+    answer = session['answer']
+    if answer != None:
+        result = (word.lower() == answer.lower())
+    else:
+        result = "Unable to recognize speech"
+
+    return render_template("result_voice.html", result = result, word= word, answer = answer)
