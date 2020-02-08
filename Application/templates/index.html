@@ -3,11 +3,19 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <form action="{{ url_for('demo') }}" method="get">
-                <button id="btnStart" type="submit" class="btn btn-primary">Start the test</button>
+        <div class="col-md-2">
+            <form action="{{ url_for('demo') }}" method="GET">
+                <button id="btnStartCAT" type="submit" class="btn btn-primary">Start the CAT test</button>  
+            </form>
+        </div>
+        <div class="col-md-2">
+            <form action="{{ url_for('pronounciation') }}" method="GET">
+                <button id="btnStartPronounciation" type="submit" class="btn btn-primary">Start the Pronounciation test</button>
             </form>
         </div>
     </div>
 </div>
 {% endblock %}
+
+
+
