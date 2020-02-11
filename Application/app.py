@@ -70,10 +70,10 @@ def pronounciation():
 @app.route("/checkpronounciation", methods=['POST'])
 def checkpronounciation():
     # Open file and write binary (blob) data
-    with open('file.wav', 'wb') as f:
+    with open('./resource/file.wav', 'wb') as f:
         f.write(request.data)
     # Speech recognition
-    response = recognize_speech(sr.Recognizer(), sr.AudioFile('file.wav'))
+    response = recognize_speech(sr.Recognizer(), sr.AudioFile('./resource/file.wav'))
     session['answer'] = response["transcription"]
     
     return redirect('/result_voice')
