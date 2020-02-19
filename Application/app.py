@@ -2,6 +2,8 @@ from algorithm import CAT, generate_bank, recognize_speech
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 import speech_recognition as sr
+import json
+import urllib.request
 
 app = Flask(__name__)
 
@@ -70,21 +72,32 @@ def pronounciation():
 @app.route("/checkpronounciation", methods=['POST'])
 def checkpronounciation():
     # Open file and write binary (blob) data
-    with open('./resource/file.wav', 'wb') as f:
+    with open('static/pronounciation_user.wav', 'wb') as f:
         f.write(request.data)
     # Speech recognition
-    response = recognize_speech(sr.Recognizer(), sr.AudioFile('./resource/file.wav'))
-    session['answer'] = response["transcription"]
+    response = recognize_speech(sr.Recognizer(), sr.AudioFile('static/pronounciation_user.wav'))
+    session['answer'] = response['transcription']
     
     return redirect('/result_voice')
 
 @app.route("/result_voice")
 def result_voice():
     word = session['word']
-    answer = session['answer']
+    # answer = session['answer']
+    answer = 'December'
     if answer != None:
         result = (word.lower() == answer.lower())
     else:
         result = "Unable to recognize speech"
+
+    # Get correct pronounciation mp3 file from online dictionaries
+    with open('static/pronounciation.json') as json_data:
+        pronounciation = json.load(json_data)
+    for link in pronounciation[word.lower()]:
+        try:
+            urllib.request.urlretrieve(link, 'static/pronounciation_dict.wav')
+            break
+        except:
+            print('Error')
 
     return render_template("result_voice.html", result = result, word= word, answer = answer)
