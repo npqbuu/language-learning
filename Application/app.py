@@ -98,6 +98,10 @@ def result_voice():
             urllib.request.urlretrieve(link, 'static/pronounciation_dict.wav')
             break
         except:
+<<<<<<< HEAD
+            print('Broken link')
+=======
             print('Error')
+>>>>>>> master
 
     return render_template("result_voice.html", result = result, word= word, answer = answer)
