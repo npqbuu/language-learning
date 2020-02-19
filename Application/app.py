@@ -2,8 +2,8 @@ from algorithm import CAT, generate_bank, recognize_speech
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 import speech_recognition as sr
-import json
-import urllib.request
+import urllib
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -89,12 +89,14 @@ def result_voice():
     else:
         result = "Unable to recognize speech"
 
-    # Get correct pronounciation mp3 file from online dictionaries
-    with open('static/pronounciation.json') as json_data:
-        pronounciation = json.load(json_data)
-    for link in pronounciation[word.lower()]:
+    # Get correct pronounciation mp3 file from online dictionary Lexico
+    url = 'https://www.lexico.com/en/definition/' + word.lower()
+    page = urllib.request.urlopen(url)
+    soup = BeautifulSoup(page, features='lxml')
+    list_audios = soup.find_all('audio')
+    for link in list_audios:
         try:
-            urllib.request.urlretrieve(link, 'static/pronounciation_dict.wav')
+            urllib.request.urlretrieve(link['src'], 'static/pronounciation_dict.wav')
             break
         except:
             print('Broken link')
