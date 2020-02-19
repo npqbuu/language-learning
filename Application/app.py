@@ -83,8 +83,7 @@ def checkpronounciation():
 @app.route("/result_voice")
 def result_voice():
     word = session['word']
-    # answer = session['answer']
-    answer = 'December'
+    answer = session['answer']
     if answer != None:
         result = (word.lower() == answer.lower())
     else:
@@ -98,10 +97,6 @@ def result_voice():
             urllib.request.urlretrieve(link, 'static/pronounciation_dict.wav')
             break
         except:
-<<<<<<< HEAD
             print('Broken link')
-=======
-            print('Error')
->>>>>>> master
 
     return render_template("result_voice.html", result = result, word= word, answer = answer)
