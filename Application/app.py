@@ -1,9 +1,14 @@
-from algorithm import CAT, generate_bank, recognize_speech
+import os
+from algorithm import CAT, generate_bank, recognize_speech, setup_questionbank
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 import speech_recognition as sr
 import urllib
 from bs4 import BeautifulSoup
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
@@ -13,8 +18,17 @@ Session(app)
 
 @app.route("/")
 def index():
-    session['items'] = generate_bank()
+    # Adaptive Test
+    #session['items'] = generate_bank()
+    
+    session['questionbank'] = pd.read_csv('resource/questionbank.csv')
+    diff = session['questionbank']['Difficulty']
+    session['items'] = setup_questionbank(diff)
+
+    print(session['items'])
     session['cat'] = CAT(session['items'])
+
+    # Pronounciation
     session['words'] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     return render_template("index.html")
@@ -31,8 +45,9 @@ def demo():
 
         progress = 0
         theta = session['cat'].thetas[0]
+        
         # Question variables
-        question = str(item_index)
+        question = str(item_index) + ' ' + str(session['items'][item_index][1])
     else:
         answer = request.form.get("answer") # Get user respone for current question
         if answer == "option1":
@@ -50,8 +65,9 @@ def demo():
         session['cat'].administered_items.append(item_index)
         progress = (len(session['cat'].thetas) - 1) * 10
         theta = session['cat'].thetas[-1]
+
         # Question variables
-        question = str(item_index)
+        question = str(item_index) + ' ' + str(session['items'][item_index][1])
 
     # Render Template
     return render_template("demo.html", question = question, theta = theta, progress = progress, choice1 = choice1, choice2 = choice2)
