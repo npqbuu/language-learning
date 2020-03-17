@@ -7,7 +7,7 @@
             <h3>RESULT: {{ result }}</h3>
             <h3>WORD: {{ word }}</h3>
             <audio controls>
-                <source src="{{ url_for('static', filename='pronounciation_dict.wav') }}">
+                <source src='{{ pronounciation_dict }}'>
             </audio>
             <h3>YOUR ANSWER: {{ answer }}</h3>
             <audio controls>
