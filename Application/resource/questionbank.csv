@@ -58,128 +58,38 @@ The book isn't on the table. It's ...... the table.,over,under,,,B,-1
 "Where is my lipstick? Oh, it's ...... my bag.",in,inside,,,A,-1
 The bakery is ...... the library and the shoe store.,near,between,,,B,-1
 "Come and sit ...... me, on the sofa.",under,next,,,B,-1
-I haven't seen him ......,since yesterday.,for yesterday.,on yesterday.,until yesterday.,,0
-Have you ever ...... to Mallorca?,gone,went,been,was,,0
-Choose the correct statement,We are use to live in Paris.,We usually live in Paris.,We are using to live in Paris.,We used to live in Paris.,,0
-I wouldn't do that ......,if I was you.,if I would be you.,if I were you.,if I would you.,,0
-"...... at the hotel, last week.",They didn't see him,They hadn't see him,They can't see him,They weren't see him,,0
-They are ...... to Brazil tomorrow.,going flying,fly,to fly,going to fly,,0
-I have never ...... Indian food.,ate,eat,eaten,to eat,,0
-"Robert's from New York, .....",doesn't he?,does he?,is he?,isn't he?,,0
-Choose the correct statement,Can you speak German?,Could you speak German?,Couldn't you speak German?,Can't you speak German?,,0
-...... to collect me after the concert.    ,You don't might,You don't must,You don't need,You don't should,,0
-Choose the correct synonym of Intelligent,clever,elegant,,,,0
-Choose the correct synonym of Beautiful,stupid,pretty,,,,0
-Choose the correct synonym of Amusing,funny,boring,,,,0
-Choose the correct synonym of Industrious,hard working,beautiful,,,,0
-Choose the correct synonym of Incredible,not believable,truly,,,,0
-Choose the correct synonym of Generous,kind,humorous,,,,0
-Choose the correct synonym of Tidy,orderly,elegant,,,,0
-" We landed ...... Dublin airport, very late.",in,at,,,,0
-"If we miss the flight, there isn't another ...... three hours!",about,for,,,,0
-We stayed ...... a really nice hotel near the beach.,at,on,,,,0
-"It's not too late, so we can still have another glass ...... wine.",for,of,,,,0
-This sweater is made ...... the softest wool!,from,of,,,,0
-We decided to spend the weekend ...... Singapore.,at,in,,,,0
-They are really looking forward ...... our visit.,to,for,,,,0
-I hope you are coming to the party ...... my birthday!,in,on,,,,0
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,1
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,2
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,3
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
-,,,,,,4
+I haven't seen him ......,since yesterday.,for yesterday.,on yesterday.,until yesterday.,A,0
+Have you ever ...... to Mallorca?,gone,went,been,was,C,0
+Choose the correct statement,We are use to live in Paris.,We usually live in Paris.,We are using to live in Paris.,We used to live in Paris.,D,0
+I wouldn't do that ......,if I was you.,if I would be you.,if I were you.,if I would you.,C,0
+"...... at the hotel, last week.",They didn't see him,They hadn't see him,They can't see him,They weren't see him,A,0
+They are ...... to Brazil tomorrow.,going flying,fly,to fly,going to fly,D,0
+I have never ...... Indian food.,ate,eat,eaten,to eat,C,0
+"Robert's from New York, .....",doesn't he?,does he?,is he?,isn't he?,D,0
+Choose the correct statement,Can you speak German?,Could you speak German?,Couldn't you speak German?,Can't you speak German?,A,0
+...... to collect me after the concert.    ,You don't might,You don't must,You don't need,You don't should,C,0
+Choose the correct synonym of Intelligent,clever,elegant,,,A,0
+Choose the correct synonym of Beautiful,stupid,pretty,,,B,0
+Choose the correct synonym of Amusing,funny,boring,,,A,0
+Choose the correct synonym of Industrious,hard working,beautiful,,,A,0
+Choose the correct synonym of Incredible,not believable,truly,,,A,0
+Choose the correct synonym of Generous,kind,humorous,,,A,0
+Choose the correct synonym of Tidy,orderly,elegant,,,A,0
+" We landed ...... Dublin airport, very late.",in,at,,,B,0
+"If we miss the flight, there isn't another ...... three hours!",about,for,,,B,0
+We stayed ...... a really nice hotel near the beach.,at,on,,,A,0
+"It's not too late, so we can still have another glass ...... wine.",for,of,,,B,0
+This sweater is made ...... the softest wool!,from,of,,,B,0
+We decided to spend the weekend ...... Singapore.,at,in,,,B,0
+They are really looking forward ...... our visit.,to,for,,,A,0
+I hope you are coming to the party ...... my birthday!,in,on,,,B,0
+ I have been living in Madrid ......,since ten years.,ten years ago.,for ten years.,ten years.,C,1
+This is the ...... thing I have ever done.,harder,hardest,hard,more hard,B,1
+Have you finished with the newspaper ......,still?,already?,now?,yet?,D,1
+"If I want to pass my exam, I ...... study harder.",will have to,would have to,had to,want to,A,1
+Michael is ...... his sister.,not so clever than,not as clever than,not as clever as,not so clever as,C,1
+...... people eat very healthy food.  ,Very little,Very less,Very least,Very few,D,1
+Choose the correct statement,We told him going to the doctor.,We told him to go to the doctor.,We told him he go to the doctor.,We told that he goes to the doctor.,B,1
+What ...... now?,does you,do you do,will you do,do you,C,1
+He hasn't got ...... time for a coffee.,many,few,a lot,much,D,1
+I have arranged ...... dinner with Barbara on Thursday.,to have,having,have had,had,A,1
