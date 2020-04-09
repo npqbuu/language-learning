@@ -31,6 +31,14 @@ def index():
 
     return render_template("index.html")
 
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def login():
+    return render_template("register.html")
+
 @app.route("/demo", methods=["GET", "POST"])
 def demo():
     choice1 = True
