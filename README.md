@@ -6,3 +6,4 @@
 - pip install flask-session
 - pip install catsim
 - pip install SpeechRecognition
+- pip install bs4
