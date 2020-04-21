@@ -7,29 +7,15 @@ from catsim.initialization import * # initialization package contains different 
 from catsim.selection import * # selection package contains different item selection strategies
 from catsim.estimation import * # estimation package contains different proficiency estimation methods
 from catsim.stopping import * # stopping package contains different stopping criteria for the CAT
-from sklearn.preprocessing import StandardScaler
 # Speech to text
 import speech_recognition as sr
 
-def generate_bank(bank_size = 185):
+def generate_bank():
     # generating an item bank
     print('Generating item bank...')
+    bank_size = 100
     
     return(generate_item_bank(bank_size, '1PL'))
-
-def setup_questionbank(diff):
-    diff = np.array([diff])
-
-    # Scaler
-    scaler = StandardScaler()
-    items = scaler.fit_transform(diff.T)
-
-    # Add default columns
-    items = np.append(np.ones((items.shape[0])).reshape(-1, 1), items, axis=1)
-    items = np.append(items, np.zeros((items.shape[0])).reshape(-1, 1), axis=1)
-    items = np.append(items, np.ones((items.shape[0])).reshape(-1, 1), axis=1)
-
-    return items
 
 class CAT():
     def __init__(self, items):
