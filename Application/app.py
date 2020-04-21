@@ -1,6 +1,7 @@
 import os
 from algorithm import CAT, generate_bank, recognize_speech, setup_questionbank, get_audio_file
 from flask import Flask, render_template, request, redirect, session
+from flask_session import Session
 import speech_recognition as sr
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -9,9 +10,9 @@ import numpy as np
 
 app = Flask(__name__)
 
-# app.config["SESSION_PERMANENT"] = False
-# app.config["SESSION_TYPE"] = "filesystem"
-# Session(app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 @app.route("/")
 def index():
