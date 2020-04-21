@@ -1,8 +1,11 @@
 import os
-from algorithm import CAT, generate_bank, recognize_speech, setup_questionbank, get_audio_file
+from algorithm import CAT, generate_bank, recognize_speech, setup_questionbank
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 import speech_recognition as sr
+import urllib
+from bs4 import BeautifulSoup
+import re
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import pandas as pd
@@ -92,9 +95,9 @@ def checkpronounciation():
     response = recognize_speech(sr.Recognizer(), sr.AudioFile('static/pronounciation_user.wav'))
     session['answer'] = response['transcription']
     
-    return redirect('/result_voice')
+    return redirect('/result_voice') # TODO: Find a way to make POST request
 
-@app.route("/result_voice")
+@app.route("/result_voice", methods=['POST', 'GET'])
 def result_voice():
     word = session['word']
     answer = session['answer']
@@ -103,7 +106,34 @@ def result_voice():
     else:
         result = "Unable to recognize speech"
     
-    # Get correct pronounciation audio link from Shtooka
-    pronounciation_dict = get_audio_file(word)
+    if request.method == "GET": # TODO: Change to POST
+        # Get correct pronounciation mp3 file from Shtooka and Lexico
+        # Shtooka
+        found_Shtooka = False
+        url = 'http://shtooka.net/search.php?str=' + word.lower() + '&lang=eng'
+        page = urllib.request.urlopen(url)
+        soup = BeautifulSoup(page, features='lxml')
+        list_audios = soup.find_all('a', href=re.compile('ogg/En-us-'))
+        for link in list_audios:
+            try:
+                urllib.request.urlretrieve(link['href'], 'static/pronounciation_dict.wav')
+                found_Shtooka = True
+                break
+            except:
+                print('Broken link')
     
-    return render_template("result_voice.html", result = result, word= word, answer = answer, pronounciation_dict = pronounciation_dict)
+        print('Found Shtooka file: ', found_Shtooka)
+        if not found_Shtooka:    
+            # Lexico
+            url = 'https://www.lexico.com/en/definition/' + word.lower()
+            page = urllib.request.urlopen(url)
+            soup = BeautifulSoup(page, features='lxml')
+            list_audios = soup.find_all('audio')
+            for link in list_audios:
+                try:
+                    urllib.request.urlretrieve(link['src'], 'static/pronounciation_dict.wav')
+                    break
+                except:
+                    print('Broken link')
+    
+    return render_template("result_voice.html", result = result, word= word, answer = answer)

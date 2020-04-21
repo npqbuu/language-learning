@@ -10,10 +10,6 @@ from catsim.stopping import * # stopping package contains different stopping cri
 from sklearn.preprocessing import StandardScaler
 # Speech to text
 import speech_recognition as sr
-# Web scraping
-import urllib
-from bs4 import BeautifulSoup
-import re
 
 def generate_bank(bank_size = 185):
     # generating an item bank
@@ -120,16 +116,3 @@ def recognize_speech(recognizer, record): # https://github.com/realpython/python
 
     return response
 
-def get_audio_file(word):
-    """
-    Get audio mp3 file from Shtooka
-    """
-    url = 'http://shtooka.net/search.php?str=' + word.lower() + '&lang=eng'
-    page = urllib.request.urlopen(url)
-    soup = BeautifulSoup(page, features='lxml')
-    link = soup.find('a', href=re.compile('mp3/En-us-'))['href']
-    try:
-        urllib.request.urlopen(link)
-        return link
-    except:
-        return None
