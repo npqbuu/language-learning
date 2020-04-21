@@ -2,15 +2,10 @@ import os
 from algorithm import CAT, generate_bank, recognize_speech, setup_questionbank, get_audio_file
 from flask import Flask, render_template, request, redirect, session
 import speech_recognition as sr
-<<<<<<< HEAD
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import pandas as pd
 import numpy as np
-=======
-import json
-import urllib.request
->>>>>>> parent of bf2e11a... change audio source to Lexico
 
 app = Flask(__name__)
 
@@ -114,23 +109,8 @@ def result_voice():
         result = (word.lower() == answer.lower())
     else:
         result = "Unable to recognize speech"
-<<<<<<< HEAD
     
     # Get correct pronounciation audio link from Shtooka
     pronounciation_dict = get_audio_file(word)
     
     return render_template("result_voice.html", result = result, word= word, answer = answer, pronounciation_dict = pronounciation_dict)
-=======
-
-    # Get correct pronounciation mp3 file from online dictionaries
-    with open('static/pronounciation.json') as json_data:
-        pronounciation = json.load(json_data)
-    for link in pronounciation[word.lower()]:
-        try:
-            urllib.request.urlretrieve(link, 'static/pronounciation_dict.wav')
-            break
-        except:
-            print('Broken link')
-
-    return render_template("result_voice.html", result = result, word= word, answer = answer)
->>>>>>> parent of bf2e11a... change audio source to Lexico
