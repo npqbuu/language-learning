@@ -2,4 +2,4 @@
 
 
 ### Prerequisites libraries
-- pip install flask flask-session catsim SpeechRecognition
+- pip install Werkzeug<1 flask flask-session catsim SpeechRecognition bs4 lxml
