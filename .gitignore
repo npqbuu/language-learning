@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/flask,python,jupyternotebooks,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=flask,python,jupyternotebooks,visualstudiocode
+# Created by https://www.gitignore.io/api/venv,flask,python,jupyternotebooks,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=venv,flask,python,jupyternotebooks,visualstudiocode
 
 ### Flask ###
 instance/*
@@ -173,6 +173,19 @@ ipython_config.py
 
 # Pyre type checker
 
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+pyvenv.cfg
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-selfcheck.json
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -184,18 +197,7 @@ ipython_config.py
 # Ignore all local history of files
 .history
 
-### Flask Session ###
-flask_session/*
-
-# End of https://www.gitignore.io/api/flask,python,jupyternotebooks,visualstudiocode
-Application/flask_session/
-
-<<<<<<< HEAD
-Application/file.wav
-=======
-.vscode/
->>>>>>> master
-
-Application/resource/file.wav
+# End of https://www.gitignore.io/api/venv,flask,python,jupyternotebooks,visualstudiocode
 
 *.wav
+flask_session/
